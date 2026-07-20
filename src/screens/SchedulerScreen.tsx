@@ -81,7 +81,7 @@ const SchedulerScreen = () => {
       showToast('Offline Mode Enabled');
     }
     dispatch(setOffline(!isOffline));
-  }, [dispatch, isOffline,showToast]);
+  }, [dispatch, isOffline, showToast]);
 
   const handleLongPress = useCallback(
     (appointment: Appointment) => {
@@ -154,6 +154,10 @@ const SchedulerScreen = () => {
         <AppointmentCard
           appointment={item.appointment}
           onLongPress={handleLongPress}
+          isPending={pendingActions.some(
+            action =>
+              action.payload.appointmentId === item.appointment?.id,
+          )}
         />
       ) : (
         <EmptySlot time={item.label} />

@@ -12,11 +12,13 @@ import Images from '../../constants/Images';
 interface Props {
   appointment: Appointment;
   onLongPress: (appointment: Appointment) => void;
+  isPending?: boolean;
 }
 
 const AppointmentCard = ({
   appointment,
   onLongPress,
+  isPending = false,
 }: Props) => {
   const statusColor = () => {
     switch (appointment.status) {
@@ -44,36 +46,46 @@ const AppointmentCard = ({
       onLongPress={() => onLongPress(appointment)}>
       <View style={styles.card}>
         <View style={styles.row}>
-        <View style={styles.row}>
-          <View style={styles.iconView}>
-            <Image
-              source={Images.ic_clock}
-              style={styles.avatar}
-              resizeMode='contain'
-              tintColor={'#7C3AED'}
-            />
-          </View>
-          <View>
-            <Text style={styles.time}>
-              {formatTime(appointment.start)} -{' '}
-              {formatTime(appointment.end)}
-            </Text>
+          <View style={styles.row}>
+            <View style={styles.iconView}>
+              <Image
+                source={Images.ic_clock}
+                style={styles.avatar}
+                resizeMode='contain'
+                tintColor={'#7C3AED'}
+              />
+            </View>
+            <View>
+              <Text style={styles.time}>
+                {formatTime(appointment.start)} -{' '}
+                {formatTime(appointment.end)}
+              </Text>
 
-            <Text style={styles.client}>
-              {appointment.clientName}
-            </Text>
+              <Text style={styles.client}>
+                {appointment.clientName}
+              </Text>
+            </View>
           </View>
-          </View>
-          <View
-            style={[
-              styles.statusBadge,
-              {
-                backgroundColor: statusColor(),
-              },
-            ]}>
-            <Text style={styles.statusText}>
-              {appointment.status.toUpperCase()}
-            </Text>
+          <View style={{ alignItems: 'flex-end' }}>
+            <View
+              style={[
+                styles.statusBadge,
+                {
+                  backgroundColor: statusColor(),
+                },
+              ]}>
+              <Text style={styles.statusText}>
+                {appointment.status.toUpperCase()}
+              </Text>
+            </View>
+
+            {isPending && (
+              <View style={styles.pendingBadge}>
+                <Text style={styles.pendingText}>
+                  Pending Sync
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </View>
@@ -137,6 +149,20 @@ const styles = StyleSheet.create({
   statusText: {
     color: '#fff',
     fontSize: 8,
+    fontWeight: '600',
+  },
+  
+  pendingBadge: {
+    marginTop: 6,
+    backgroundColor: '#FFF3CD',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+
+  pendingText: {
+    fontSize: 10,
+    color: '#856404',
     fontWeight: '600',
   },
 });
